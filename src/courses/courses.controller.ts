@@ -6,11 +6,13 @@ import {
   Get,
   HttpException,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseFilters,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/filters/http.filter';
+import { ToIntegerPipe } from 'src/pipes/to-integer.pipe';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
