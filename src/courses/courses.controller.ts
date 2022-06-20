@@ -1,12 +1,16 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  HttpException,
   Param,
   Patch,
   Post,
+  UseFilters,
 } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/filters/http.filter';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -32,6 +36,9 @@ export class CoursesController {
 
   @Patch(':id')
   upddate(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
+    if (!id) {
+      throw new BadRequestException('Cannot update course id');
+    }
     return this.coursesService.update(id, updateCourseDto);
   }
 
