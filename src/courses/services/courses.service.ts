@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
-import { Course } from './entities/courses.entity';
-import { CourseDocument } from './schema/courses.schema';
+import { CreateCourseDto } from '../dto/create-course.dto';
+import { UpdateCourseDto } from '../dto/update-course.dto';
+import { Course } from 'src/courses/entities/course.entity';
+import { CourseDocument } from '../schema/courses.schema';
 
 @Injectable()
 export class CoursesService {
@@ -19,6 +19,10 @@ export class CoursesService {
 
   findOne(id: string) {
     return this.courseModel.findById(id);
+  }
+
+  findCourseByUrl(courseUrl: string) {
+    return this.courseModel.findOne({ url: courseUrl });
   }
 
   create(createCourseDto: CreateCourseDto) {

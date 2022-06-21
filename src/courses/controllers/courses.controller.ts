@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   HttpException,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
@@ -13,9 +14,9 @@ import {
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/filters/http.filter';
 import { ToIntegerPipe } from 'src/pipes/to-integer.pipe';
-import { CoursesService } from './courses.service';
-import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
+import { CoursesService } from '../services/courses.service';
+import { CreateCourseDto } from '../dto/create-course.dto';
+import { UpdateCourseDto } from '../dto/update-course.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -24,6 +25,15 @@ export class CoursesController {
   @Get()
   findAll() {
     return this.coursesService.findAll();
+  }
+
+  @Get(':courseUrl')
+  findCourseByUrl(@Param('courseUrl') courseUrl: string) {
+    const course = this.coursesService.findCourseByUrl(courseUrl);
+    if (!course) {
+      throw new NotFoundException('could not find course for url ' + courseUrl);
+    }
+    return course;
   }
 
   @Get(':id')
