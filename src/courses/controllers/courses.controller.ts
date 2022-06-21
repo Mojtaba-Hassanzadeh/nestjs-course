@@ -11,14 +11,18 @@ import {
   Patch,
   Post,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/filters/http.filter';
 import { ToIntegerPipe } from 'src/pipes/to-integer.pipe';
 import { CoursesService } from '../services/courses.service';
 import { CreateCourseDto } from '../dto/create-course.dto';
 import { UpdateCourseDto } from '../dto/update-course.dto';
+import { AuthenticationGuard } from 'src/guards/authentication.guard';
+import { AdminGuard } from 'src/guards/admin.guard';
 
 @Controller('courses')
+@UseGuards(AuthenticationGuard)
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
@@ -42,11 +46,13 @@ export class CoursesController {
   }
 
   @Post()
+  @UseGuards(AdminGuard)
   create(@Body() createCourseDto: CreateCourseDto) {
     return this.coursesService.create(createCourseDto);
   }
 
   @Patch(':id')
+  @UseGuards(AdminGuard)
   upddate(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
     if (!id) {
       throw new BadRequestException('Cannot update course id');
@@ -55,6 +61,7 @@ export class CoursesController {
   }
 
   @Delete(':id')
+  @UseGuards(AdminGuard)
   remove(@Param('id') id: string) {
     return this.coursesService.remove(id);
   }

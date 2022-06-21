@@ -32,6 +32,7 @@ export class CoursesService {
   update(id: string, updateCourseDto: UpdateCourseDto) {
     return this.courseModel.findByIdAndUpdate(id, updateCourseDto);
   }
+  آ;
 
   remove(id: string) {
     return this.courseModel.findByIdAndRemove(id);
